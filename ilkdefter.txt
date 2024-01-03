@@ -1,3 +1,5 @@
 hosgeldiniz
 
-gitignor öğreniyoruz
+gitignore öğreniyoruz
+
+ilk konuyu bitirdik
