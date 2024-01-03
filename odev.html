@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEOMATİK MÜHENDİSLİĞİ UYGULAMALARI</title>
+    <style>
+        body 
+        {
+            background-color: #8f95a0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #assignment-title 
+        {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        #profile-image 
+        {
+            width: 512px;
+            height: 512px;
+            border-radius: 3%;
+            margin-bottom: 20px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #angle-calculations 
+        {
+            display: none;
+        }
+
+        #informations_student 
+        {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background-color: #71757e;
+            padding: 10px;
+            border: 2px solid #55585f;
+            font-weight: bold;
+            border-radius: 5%;
+        }
+        
+        #informations_tea   chers 
+        {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background-color: #71757e;
+            padding: 10px;
+            border: 2px solid #55585f;
+            font-weight: bold;
+            border-radius: 5%;
+        }
+
+        #geomatics-applications button 
+        {
+            background-color: #ffffff; 
+            color: rgb(0, 0, 0); 
+            padding: 10px;
+            border: none; 
+            cursor: pointer;
+            border-radius: 5%;
+            font-weight: bold;
+        }
+
+        #geomatics-applications button:hover 
+        {
+            background-color: #71757e;
+        }
+
+
+
+        .input-container 
+        {
+            margin-bottom: 10px;
+        }
+
+        .result 
+        {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #matrix-multiplication 
+        {
+            display: none;
+        }
+
+        .matrix-container 
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .matrix-input 
+        {
+            width: 35px;
+            text-align: center;
+            margin: 2px;
+            margin-right: 2px;
+        }
+
+        table 
+        {
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table,
+        th,
+        td 
+        {
+            border: 2px solid rgb(0, 0, 0);
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="profile-image" src="Ekran görüntüsü 2023-12-27 204740.png" alt="Profil Resmi Bulunamadı!" />
+
+    <div id="assignment-title">
+        Geomatics Engineering Applications
+    </div>
+
+    <div id="informations_student">
+        <p>Name Surname: Ahmed Erkam Gök</p>
+        <p>Student Number: 010220539</p>
+        <p>Course Code: GEO 101E</p>
+        <p>CRN: 12027</p>
+    </div>
+
+    <div id="informations_teachers">
+        <p>Muhammed Enes Atik</p>
+        <p>Hatice Atalay</p>
+    </div>
+
+    <div id="geomatics-applications">
+        <center>
+            <button onclick="showAngleCalculations()">Angle Calculation</button>
+            <button onclick="showMatrixMultiplication()">Matrix Multiplication</button>
+        </center>
+
+        <div id="angle-calculations">
+            <center>
+                <h3>Sinus and Cosinus Calculator</h3>
+                <div class="input-container">
+                    <label for="angle1">Angle 1:</label>
+                    <input type="text" id="angle1" placeholder="Enter the Angle in Degrees">
+                </div>
+                <div class="input-container">
+                    <label for="angle2">Angle 2:</label>
+                    <input type="text" id="angle2" placeholder="Enter the Angle in Degrees">
+                </div>
+                <div class="input-container">
+                    <label for="angle3">Angle 3:</label>
+                    <input type="text" id="angle3" placeholder="Enter the Angle in Degrees">
+                </div>
+                <div class="input-container">
+                    <label for="angle4">Angle 4:</label>
+                    <input type="text" id="angle4" placeholder="Enter the Angle in Degrees">
+                </div>
+                <button onclick="performAngleCalculations()">Calculate</button>
+                <div class="result" id="resultAngleCalculations"></div>
+                <button onclick="convertToGrads()">Convert to Grads</button>
+                <div class="result" id="resultGradsConversion"></div>
+            </center>
+        </div>
+
+        <div id="matrix-multiplication">
+            <h2>Matrix Multiplication</h2>
+            <div class="matrix-container">
+                <div>
+                    <label for="matrixA">Matrix A</label><br>
+                    <div id="matrixA" class="matrix-inputs"></div>
+                </div>
+                <div class="matrix-divider">X</div>
+                <div>
+                    <label for="matrixB">Matrix B</label><br>
+                    <div id="matrixB" class="matrix-inputs"></div>
+                </div>
+            </div>
+            <button onclick="multiplyMatrices()">Calculate</button>
+            <h3>Result</h3>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to dynamically create matrix input fields
+        function createMatrixInput(matrixId) 
+        {
+            var matrixDiv = document.getElementById(matrixId);
+            matrixDiv.classList.add("matrix-inputs");
+
+            for (var i = 0; i < 4; i++) 
+            {
+                for (var j = 0; j < 4; j++) 
+                {
+                    var input = document.createElement("input");
+                    input.setAttribute("class", "matrix-input");
+                    input.setAttribute("type", "number");
+                    input.setAttribute("id", matrixId + "_" + i + "_" + j);
+                    input.setAttribute("placeholder", "0");
+                    matrixDiv.appendChild(input);
+                }
+                matrixDiv.appendChild(document.createElement("br"));
+            }
+        }
+
+        window.onload = function () 
+        {
+            createMatrixInput("matrixA");
+            createMatrixInput("matrixB");
+        };
+
+        function multiplyMatrices() 
+        {
+            var matrixA = parseMatrix("matrixA");
+            var matrixB = parseMatrix("matrixB");
+
+            if (!matrixA || !matrixB) 
+            {
+                alert("Invalid input. Please enter valid matrices.");
+                return;
+            }
+
+            var resultMatrix = multiplyMatricesFunction(matrixA, matrixB);
+
+            displayMatrix("result", resultMatrix);
+        }
+
+        function parseMatrix(matrixId) 
+        {
+            var matrix = [];
+
+            for (var i = 0; i < 4; i++) 
+            {
+                matrix[i] = [];
+                for (var j = 0; j < 4; j++) 
+                {
+                    var inputValue = document.getElementById(matrixId + "_" + i + "_" + j).value;
+                    matrix[i][j] = parseFloat(inputValue) || 0;
+                }
+            }
+
+            return matrix;
+        }
+
+        function multiplyMatricesFunction(matrixA, matrixB) 
+        {
+            var result = [];
+            var rowsA = matrixA.length;
+            var colsA = matrixA[0].length;
+            var colsB = matrixB[0].length;
+
+            for (var i = 0; i < rowsA; i++) 
+            {
+                result[i] = [];
+                for (var j = 0; j < colsB; j++) 
+                {
+                    result[i][j] = 0;
+                    for (var k = 0; k < colsA; k++) 
+                    {
+                        result[i][j] += matrixA[i][k] * matrixB[k][j];
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        function displayMatrix(divId, matrix) 
+        {
+            var resultDiv = document.getElementById(divId);
+            resultDiv.innerHTML = "";
+
+            var table = document.createElement("table");
+            matrix.forEach(function (row) 
+            {
+                var tr = document.createElement("tr");
+                row.forEach(function (cell) 
+                {
+                    var td = document.createElement("td");
+                    td.appendChild(document.createTextNode(cell));
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+
+            resultDiv.appendChild(table);
+        }
+
+        function hideAllSections() 
+        {
+            document.getElementById("angle-calculations").style.display = "none";
+            document.getElementById("matrix-multiplication").style.display = "none";
+        }
+
+        function showMatrixMultiplication() 
+        {
+            hideAllSections();
+            document.getElementById("matrix-multiplication").style.display = "block";
+        }
+
+        function showAngleCalculations() 
+        {
+            hideAllSections();
+            document.getElementById("angle-calculations").style.display = "block";
+        }
+
+        function performAngleCalculations() 
+        {
+            var angle1 = parseFloat(document.getElementById("angle1").value);
+            var angle2 = parseFloat(document.getElementById("angle2").value);
+            var angle3 = parseFloat(document.getElementById("angle3").value);
+            var angle4 = parseFloat(document.getElementById("angle4").value);
+
+            var sinAngle1 = Math.sin(angle1 * (Math.PI / 180));
+            var cosAngle1 = Math.cos(angle1 * (Math.PI / 180));
+
+            var sinAngle2 = Math.sin(angle2 * (Math.PI / 180));
+            var cosAngle2 = Math.cos(angle2 * (Math.PI / 180));
+
+            var sinAngle3 = Math.sin(angle3 * (Math.PI / 180));
+            var cosAngle3 = Math.cos(angle3 * (Math.PI / 180));
+
+            var sinAngle4 = Math.sin(angle4 * (Math.PI / 180));
+            var cosAngle4 = Math.cos(angle4 * (Math.PI / 180));
+
+            var result = "Angle 1: Sin=" + sinAngle1 + ", Cos=" + cosAngle1 + "<br>" +
+                "Angle 2: Sin=" + sinAngle2 + ", Cos=" + cosAngle2 + "<br>" +
+                "Angle 3: Sin=" + sinAngle3 + ", Cos=" + cosAngle3 + "<br>" +
+                "Angle 4: Sin=" + sinAngle4 + ", Cos=" + cosAngle4 + "<br>";
+            document.getElementById("resultAngleCalculations").innerHTML = result;
+        }
+
+        function convertToGrads() 
+        {
+            var angle1 = parseFloat(document.getElementById("angle1").value);
+            var angle2 = parseFloat(document.getElementById("angle2").value);
+            var angle3 = parseFloat(document.getElementById("angle3").value);
+            var angle4 = parseFloat(document.getElementById("angle4").value);
+
+            var angle1InGrad = angle1 * (Math.PI / 180);
+            var angle2InGrad = angle2 * (Math.PI / 180);
+            var angle3InGrad = angle3 * (Math.PI / 180);
+            var angle4InGrad = angle4 * (Math.PI / 180);
+
+            var sinAngle1 = Math.sin(angle1InGrad);
+            var cosAngle1 = Math.cos(angle1InGrad);
+
+            var sinAngle2 = Math.sin(angle2InGrad);
+            var cosAngle2 = Math.cos(angle2InGrad);
+
+            var sinAngle3 = Math.sin(angle3InGrad);
+            var cosAngle3 = Math.cos(angle3InGrad);
+
+            var sinAngle4 = Math.sin(angle4InGrad);
+            var cosAngle4 = Math.cos(angle4InGrad);
+
+            var result = "Angle 1 in Grads: " + angle1InGrad.toFixed(4) + ", Sin=" + sinAngle1.toFixed(4) + ", Cos=" + cosAngle1.toFixed(4) + "<br>" +
+                "Angle 2 in Grads: " + angle2InGrad.toFixed(4) + ", Sin=" + sinAngle2.toFixed(4) + ", Cos=" + cosAngle2.toFixed(4) + "<br>" +
+                "Angle 3 in Grads: " + angle3InGrad.toFixed(4) + ", Sin=" + sinAngle3.toFixed(4) + ", Cos=" + cosAngle3.toFixed(4) + "<br>" +
+                "Angle 4 in Grads: " + angle4InGrad.toFixed(4) + ", Sin=" + sinAngle4.toFixed(4) + ", Cos=" + cosAngle4.toFixed(4) + "<br>";
+
+            document.getElementById("resultGradsConversion").innerHTML = result;
+        }
+    </script>
+</body>
+
+</html>
