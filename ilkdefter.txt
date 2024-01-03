@@ -1,5 +1,0 @@
-hosgeldiniz
-
-gitignore öğreniyoruz
-
-ilk konuyu bitirdik
